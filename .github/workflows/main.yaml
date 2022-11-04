@@ -5,11 +5,51 @@ on:
  push:
   branches:
   - 'v[0-9]+.[0-9]+'
+  #Step-1
+  #test this on 3- release with branch name
 
 jobs:
+
+  #Step 2
+  deploy-to-railway:
+    runs-on: ubuntu-latest
+    name: Deploys to railway (test)
+    - uses: bervProject/railway-deploy@main
+      with:
+        railway_token: ${{ secrets.RAILWAY_TOKEN }}
+    
+  #Step 3
+  build:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+    - name: github marketplace create release (ncipollo)
+    - uses: actions/checkout@v2
+    - uses: ncipollo/release-action@v1.11.1
+      with:
+        ref: ${{ github.ref_name }}
+        artifacts: "release.tar.gz,foo/*.txt"
+        bodyFile: "body.md"
+        token: ${{ secrets.YOUR_GITHUB_TOKEN }}
+
+  slack-notifications:
+    runs-on: ubuntu-latest
+    name: Sends a message to Slack when a push, a pull request or an issue is made
+    steps:
+      - name: Send message to Slack API
+        uses: archive/github-actions-slack@v2.0.0
+        id: notify
+        with:
+          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
+          slack-channel: CPPUV5KU0
+          slack-text: Hello! Event "${{ github.event_name }}" in "${{ github.repository }}" 
+      - name: Result from "Send Message"
+        run: echo "The result was ${{ steps.notify.outputs.slack-result }}"
+
+
   release-and-deploy:
     runs-on: ubuntu-latest
-    # if: github.ref == 'refs/heads/release'
     steps:
     - name: echo the branch name
       run: echo "current branch - ${{ github.ref_name }}"
@@ -18,12 +58,34 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: ${{ github.ref_name }}
-        
-    - name: deploy to vercel
-      uses: amondnet/vercel-action@v25.1.0
-      with:
-        vercel-token: ${{ secrets.VERCEL_TOKEN }}
-        github-token: ${{ secrets.GH_TOKEN }}
-        vercel-org-id: ${{ secrets.ORG_ID }}
-        vercel-project-id: ${{ secrets.PROJ_ID }}
-        vercel-args: '--prod'
+
+    -name: install node
+      run: npm install -g npm
+
+    -name: use Node 16
+      uses: actions/checkout@v3
+      uses: actions/setup-node@v3
+        with:
+          node-version: 16
+      run: npm ci
+      run: npm test
+
+    -name: Install Railway
+      run: npm i -g @railway/cli
+
+    -name: Deploy
+      run: railway up
+      env:
+        RAILWAY_TOKEN: 
+
+
+
+
+    # - name: deploy to vercel
+    #   uses: amondnet/vercel-action@v25.1.0
+    #   with:
+    #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
+    #     github-token: ${{ secrets.GH_TOKEN }}
+    #     vercel-org-id: ${{ secrets.ORG_ID }}
+    #     vercel-project-id: ${{ secrets.PROJ_ID }}
+    #     vercel-args: '--prod'
