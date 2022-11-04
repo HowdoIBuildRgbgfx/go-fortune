@@ -9,75 +9,57 @@ on:
   #test this on 3- release with branch name
 
 jobs:
-
-  #Step 2
-  deploy-to-railway:
-    runs-on: ubuntu-latest
-    name: Deploys to railway (test)
-    - uses: bervProject/railway-deploy@main
-      with:
-        railway_token: ${{ secrets.RAILWAY_TOKEN }}
-    
-  #Step 3
-  build:
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-    steps:
-    - name: github marketplace create release (ncipollo)
-    - uses: actions/checkout@v2
-    - uses: ncipollo/release-action@v1.11.1
-      with:
-        ref: ${{ github.ref_name }}
-        artifacts: "release.tar.gz,foo/*.txt"
-        bodyFile: "body.md"
-        token: ${{ secrets.YOUR_GITHUB_TOKEN }}
-
-  slack-notifications:
-    runs-on: ubuntu-latest
-    name: Sends a message to Slack when a push, a pull request or an issue is made
-    steps:
-      - name: Send message to Slack API
-        uses: archive/github-actions-slack@v2.0.0
-        id: notify
-        with:
-          slack-bot-user-oauth-access-token: ${{ secrets.SLACK_BOT_USER_OAUTH_ACCESS_TOKEN }}
-          slack-channel: CPPUV5KU0
-          slack-text: Hello! Event "${{ github.event_name }}" in "${{ github.repository }}" 
-      - name: Result from "Send Message"
-        run: echo "The result was ${{ steps.notify.outputs.slack-result }}"
-
-
-  release-and-deploy:
+  post-to-slack:
     runs-on: ubuntu-latest
     steps:
+
     - name: echo the branch name
       run: echo "current branch - ${{ github.ref_name }}"
 
-    - name: checkout the branch
-      uses: actions/checkout@v3
+    - name: Send custom JSON data to Slack workflow
+      id: slack
+      uses: slackapi/slack-github-action@v1.23.0
       with:
-        ref: ${{ github.ref_name }}
-
-    -name: install node
-      run: npm install -g npm
-
-    -name: use Node 16
-      uses: actions/checkout@v3
-      uses: actions/setup-node@v3
-        with:
-          node-version: 16
-      run: npm ci
-      run: npm test
-
-    -name: Install Railway
-      run: npm i -g @railway/cli
-
-    -name: Deploy
-      run: railway up
+        # For posting a rich message using Block Kit
+        payload: |
+          {
+            "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+            "blocks": [
+              {
+                "type": "section",
+                "text": {
+                  "type": "mrkdwn",
+                  "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+                }
+              }
+            ]
+          }
       env:
-        RAILWAY_TOKEN: 
+        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TEST }}
+        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
+
+    # - name: Send custom JSON data to Slack workflow
+    #   id: slack
+    #   uses: slackapi/slack-github-action@v1.23.0
+    #   with:
+    #     # For posting a rich message using Block Kit
+    #     payload: |
+    #       {
+    #         "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}",
+    #         "blocks": [
+    #           {
+    #             "type": "section",
+    #             "text": {
+    #               "type": "mrkdwn",
+    #               "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
+    #             }
+    #           }
+    #         ]
+    #       }
+    #   env:
+    #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TEST }}
+    #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
 
 
 
