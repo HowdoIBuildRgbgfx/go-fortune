@@ -30,7 +30,17 @@ jobs:
               "text": 
               {
               "type": "mrkdwn",
-              "text": "bar"
+              "text": "Name:
+              something someone
+              Metriculation:
+              ttttttt
+              Email:
+              tttttt6@u.nus.edu
+              Repository:
+              git://test
+              Deployment:
+              https://test
+              "
               }
             }
             ]
