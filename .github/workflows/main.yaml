@@ -30,7 +30,7 @@ jobs:
               "text": 
               {
               "type": "mrkdwn",
-              "text": "Name: something someone"
+              "text": "Name: something someone <br\>\n"
               }
             }
             ]
