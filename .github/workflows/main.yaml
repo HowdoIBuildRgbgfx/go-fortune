@@ -30,12 +30,7 @@ jobs:
               "text": 
               {
               "type": "mrkdwn",
-              "text": "Name: 
-              something someone
-              Email:
-              tttttt6@u.nus.edu
-              Deployment:
-              https://test"
+              "text": "Name: something someone"
               }
             }
             ]
