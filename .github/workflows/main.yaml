@@ -1,44 +1,29 @@
-name: My First Workflow
+name: DipSA CICD Workshop
 
 #trigger
-on: 
-- push
+on:
+ push:
+  branches:
+  - 'v[0-9]+.[0-9]+'
 
-#Jobs in the workflow
 jobs:
-  #job name,
-  my-first-workflow:
-    #OS that this workflow is running on
+  release-and-deploy:
     runs-on: ubuntu-latest
-
-    #list of steps to perform task
+    # if: github.ref == 'refs/heads/release'
     steps:
-    - name: echo the date
-      #run mans execute the command on the OS
-      run: echo "the current time and date in Github $(date)"
-    - name: echo information about the context
-      run: echo "head_ref - ${{ github.head_ref }}, owner- ${{ github.repository_owner }}"
-    - name: echo information about the job id and path
-      run: echo "the job id is ${{ github.job }} and the path is ${{ github.path }}"
-    - name: remind user that yaml uses python syntax
-      run: echo "yaml uses python syntax, so please remember to indent all of the array elements with the same number of spaces!"
-      #test- hmm this doesn't create a new folder
-    #- name: try creating a mkdir in git
-      # run: mkdir TestDir
-    # - name: fail workflow
-    #   run: fail()
-    - name: Echo my secret
-      run: echo "MY_SECRET is ${{ secrets.MY_SECRET }}"
-    - name: Echo my secret in lowercase to test
-      run: echo "my_secret is ${{ secrets.my_secret }}"
+    - name: echo the branch name
+      run: echo "current branch - ${{ github.ref_name }}"
 
-    - name: list my current directory
-      run: ls -la
-
-    - name: checkout the current repo
+    - name: checkout the branch
       uses: actions/checkout@v3
-      
-    - name: list again
-      run: ls -la
-
-
+      with:
+        ref: ${{ github.ref_name }}
+        
+    - name: deploy to vercel
+      uses: amondnet/vercel-action@v25.1.0
+      with:
+        vercel-token: ${{ secrets.VERCEL_TOKEN }}
+        github-token: ${{ secrets.GH_TOKEN }}
+        vercel-org-id: ${{ secrets.ORG_ID }}
+        vercel-project-id: ${{ secrets.PROJ_ID }}
+        vercel-args: '--prod'
