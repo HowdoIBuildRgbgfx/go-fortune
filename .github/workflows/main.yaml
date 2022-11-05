@@ -18,21 +18,64 @@ jobs:
 
     - name: Send custom JSON data to Slack workflow
       id: slack
-      uses: slackapi/slack-github-action@v1.23.0
+      - uses: slackapi/slack-github-action@v1.23.0
+      - uses: dorshinar/get-deployment-url@master
       with:
         # For posting a rich message using Block Kit
         payload: |
           {
-            "blocks": 
-            [
-            {
-              "type": "section",
-              "text": 
+            "blocks": [
               {
-              "type": "mrkdwn",
-              "text": "Name:\nJason Tay Neng Wei\n\nMatriculation:\nA0265092A\n\nEmail:\nJason.Tay.NW@gmail.com\n\nRepository:\nwww.google.com/\n\nDeployment:\nwww.google.com/\n\n<https://www.google.com/|Test Link>\n\n${{ github.event.head_commit.message }}"
+                "type": "header",
+                "text": {
+                  "type": "plain_text",
+                  "text": "DipSA55 CI/CD Assignment Submission"
+                }
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Name:*\nJason Tay Neng Wei"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Matriculation:*\nA0265092A"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Email:*\nJason.Tay.NW@gmail.com"
+                  },
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Repository:*\nwww.google.com/"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "*Deployment:*\n${{ steps.deployment.outputs.deployment }}"
+                  }
+                ]
+              },
+              {
+                "type": "section",
+                "fields": [
+                  {
+                    "type": "mrkdwn",
+                    "text": "<${{ steps.deployment.outputs.deployment }}|Open Application>"
+                  }
+                ]
               }
-            }
             ]
           }
       env:
