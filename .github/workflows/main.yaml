@@ -46,7 +46,6 @@ jobs:
         prerelease: false
     #Step-2: Deploy to Railway
     - name: Deploy
-      id: deploy_app
       run: railway up
       env:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
