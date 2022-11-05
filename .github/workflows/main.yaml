@@ -30,7 +30,7 @@ jobs:
               "text": 
               {
               "type": "mrkdwn",
-              "text": "GitHub Action build result: something\t\n${{ job.status }}"
+              "text": "Name:\nJason Tay Neng Wei\n\nMatriculation:\nA0265092A\n\nEmail:\nJason.Tay.NW@gmail.com\n\nRepository:\nwww.google.com/\n\nDeployment:\nwww.google.com/\n\n<https://www.google.com/|Test Link>\n\n${{ github.event.head_commit.message }}"
               }
             }
             ]
