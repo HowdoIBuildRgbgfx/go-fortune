@@ -46,7 +46,6 @@ jobs:
       with:
         token: ${{ secrets.GH_TOKEN }}
 
-
     #test dorshinar after deploying
     - name: Send custom JSON data to Slack workflow
       id: slack
