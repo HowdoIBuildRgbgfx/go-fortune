@@ -19,7 +19,7 @@ jobs:
     - name: Get deployment URL
       id: deployment
       uses: dorshinar/get-deployment-url@master
-      timeout-minutes: 5
+      timeout-minutes: 1
       with:
         token: ${{ secrets.GH_TOKEN }}
 
@@ -60,7 +60,7 @@ jobs:
                   },
                   {
                     "type": "mrkdwn",
-                    "text": "*Repository:*\nwww.google.com/"
+                    "text": "*Repository:*\nhttps://github.com/${{github.repository}}/commit/${{github.sha}}/checks/${{github.run_id}}"
                   }
                 ]
               },
