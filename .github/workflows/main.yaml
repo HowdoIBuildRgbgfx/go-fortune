@@ -48,7 +48,7 @@ jobs:
 
     - name: Get Deployment URL
       id: deployment1
-      uses: dorshinar/get-deployment-url@master
+      uses: dorshinar/get-deployment-url@v1.0.7
       timeout-minutes: 1
       with:
         token: ${{ secrets.GH_TOKEN }}
