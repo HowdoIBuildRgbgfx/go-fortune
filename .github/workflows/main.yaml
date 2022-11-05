@@ -17,6 +17,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+    #Install prerequisites
     - name: Install Node and NPM
       run: sudo apt install nodejs
 
@@ -28,11 +29,23 @@ jobs:
 
     - name: Echo the branch name
       run: echo "current branch - ${{ github.ref_name }}"
-
+    #Step-3: Checkout using branch name
     - name: Checkout the Current Repo
       uses: actions/checkout@v3
       with:
         ref: ${{ github.ref_name }}
+    #Step-3: Create Release using Branch Name
+    - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body:  ${{ github.event.head_commit.message }}
+          draft: false
+          prerelease: false
 
     - name: Deploy
       run: railway up
@@ -40,18 +53,18 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
 #Does not work
-#    - name: Get Deployment URL
-#      id: deployment
-#      uses: dorshinar/get-deployment-url@master
-#      timeout-minutes: 10
-#      with:
-#        token: ${{ secrets.GH_TOKEN }}
+    - name: Get Deployment URL
+      id: deployment
+      uses: dorshinar/get-deployment-url@master
+      timeout-minutes: 1
+      with:
+        token: ${{ secrets.GITHUB_TOKEN  }}
 
     - name: Send custom JSON data to Slack workflow
       id: slack
       uses: slackapi/slack-github-action@v1.23.0
       with:
-        #Step-4: Posting a rich message using Block Kit
+      #Step-4: Posting a rich message to Slack using Block Kit
         payload: |
           {
             "blocks": [
@@ -111,45 +124,3 @@ jobs:
       env:
         SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TEST }}
         SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-
-
-
-
-
-
-
-
-#wonder what mrkdwn means- markdown?
-
-    # - name: Send custom JSON data to Slack workflow
-    #   id: slack
-    #   uses: slackapi/slack-github-action@v1.23.0
-    #   with:
-    #     # For posting a rich message using Block Kit
-    #     payload: |
-    #       {
-    #         "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }} || toJSON(github.event.head_commit.message)",
-    #         "blocks": [
-    #           {
-    #             "type": "section",
-    #             "text": {
-    #               "type": "mrkdwn",
-    #               "text": "GitHub Action build result: ${{ job.status }}\n${{ github.event.pull_request.html_url || github.event.head_commit.url }}"
-    #             }
-    #           }
-    #         ]
-    #       }
-    #   env:
-    #     SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TEST }}
-    #     SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
-
-
-
-    # - name: deploy to vercel
-    #   uses: amondnet/vercel-action@v25.1.0
-    #   with:
-    #     vercel-token: ${{ secrets.VERCEL_TOKEN }}
-    #     github-token: ${{ secrets.GH_TOKEN }}
-    #     vercel-org-id: ${{ secrets.ORG_ID }}
-    #     vercel-project-id: ${{ secrets.PROJ_ID }}
-    #     vercel-args: '--prod'
