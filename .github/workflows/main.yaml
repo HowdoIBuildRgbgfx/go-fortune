@@ -40,18 +40,12 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
     - name: Get Deployment URL
-      id: deployment0
+      id: deployment
       uses: dorshinar/get-deployment-url@master
       timeout-minutes: 1
       with:
-        token: ${{ secrets.GH_TOKEN }}
+        token: ${{ secrets.RAILWAY_TOKEN }}
 
-    - name: Get Deployment URL
-      id: deployment1
-      uses: dorshinar/get-deployment-url@v1.0.7
-      timeout-minutes: 1
-      with:
-        token: ${{ secrets.GH_TOKEN }}
 
     #test dorshinar after deploying
     - name: Send custom JSON data to Slack workflow
