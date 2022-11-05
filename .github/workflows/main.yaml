@@ -33,70 +33,77 @@ jobs:
           RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
     #test dorshinar after deploying
-    - name: Send custom JSON data to Slack workflow
-      id: slack
-      uses: slackapi/slack-github-action@v1.23.0
-      with:
-        #Step-4: Posting a rich message using Block Kit
-        payload: |
-          {
-            "blocks": [
-              {
-                "type": "header",
-                "text": {
-                  "type": "plain_text",
-                  "text": "DipSA55 CI/CD Assignment Submission"
-                }
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Name:*\nJason Tay Neng Wei"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Matriculation:*\nA0265092A"
-                  }
-                ]
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Email:*\nJason.Tay.NW@gmail.com"
-                  },
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Repository:*\nhttps://github.com/${{github.repository}}"
-                  }
-                ]
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "*Deployment:*\nhttps://www.google.com/"
-                  }
-                ]
-              },
-              {
-                "type": "section",
-                "fields": [
-                  {
-                    "type": "mrkdwn",
-                    "text": "<https://www.google.com/|Open Application>"
-                  }
-                ]
-              }
-            ]
-          }
-      env:
-        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TEST }}
-        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+#    - name: Send custom JSON data to Slack workflow
+#      id: slack
+#      uses: slackapi/slack-github-action@v1.23.0
+#      with:
+#        #Step-4: Posting a rich message using Block Kit
+#        payload: |
+#          {
+#            "blocks": [
+#              {
+#                "type": "header",
+#                "text": {
+#                  "type": "plain_text",
+#                  "text": "DipSA55 CI/CD Assignment Submission"
+#                }
+#              },
+#              {
+#                "type": "section",
+#                "fields": [
+#                  {
+#                    "type": "mrkdwn",
+#                    "text": "*Name:*\nJason Tay Neng Wei"
+#                  },
+#                  {
+#                    "type": "mrkdwn",
+#                    "text": "*Matriculation:*\nA0265092A"
+#                  }
+#                ]
+#              },
+#              {
+#                "type": "section",
+#                "fields": [
+#                  {
+#                    "type": "mrkdwn",
+#                    "text": "*Email:*\nJason.Tay.NW@gmail.com"
+#                  },
+#                  {
+#                    "type": "mrkdwn",
+#                    "text": "*Repository:*\nhttps://github.com/${{github.repository}}"
+#                  }
+#                ]
+#              },
+#              {
+#                "type": "section",
+#                "fields": [
+#                  {
+#                    "type": "mrkdwn",
+#                    "text": "*Deployment:*\nhttps://www.google.com/"
+#                  }
+#                ]
+#              },
+#              {
+#                "type": "section",
+#                "fields": [
+#                  {
+#                    "type": "mrkdwn",
+#                    "text": "<https://www.google.com/|Open Application>"
+#                  }
+#                ]
+#              }
+#            ]
+#          }
+#      env:
+#        SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_TEST }}
+#        SLACK_WEBHOOK_TYPE: INCOMING_WEBHOOK
+
+
+
+
+
+
+
 
 #wonder what mrkdwn means- markdown?
 
