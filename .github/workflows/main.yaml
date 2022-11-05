@@ -36,16 +36,16 @@ jobs:
         ref: ${{ github.ref_name }}
     #Step-3: Create Release using Branch Name
     - name: Create Release
-        id: create_release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body:  ${{ github.event.head_commit.message }}
-          draft: false
-          prerelease: false
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Release ${{ github.ref }}
+        body:  ${{ github.event.head_commit.message }}
+        draft: false
+        prerelease: false
 
     - name: Deploy
       run: railway up
