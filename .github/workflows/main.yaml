@@ -6,6 +6,9 @@ on:
   branches:
   - 'v[0-9]+.[0-9]+'
   #Step-1: Pipeline trigger
+  -
+env:
+  BRANCH: ${{ github.ref_name }}"
 
 jobs:
   begin-workflow:
@@ -38,7 +41,7 @@ jobs:
 
     - name: Get Deployment URL
       id: deployment
-      uses: dorshinar/get-deployment-url@${{ format('{0}', github.ref_name) }}
+      uses: dorshinar/get-deployment-url@$BRANCH
       timeout-minutes: 1
       with:
         token: ${{ secrets.GH_TOKEN }}
