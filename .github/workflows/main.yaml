@@ -40,14 +40,14 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
     - name: Get Deployment URL
-      id: deployment
+      id: deployment0
       uses: dorshinar/get-deployment-url@master
       timeout-minutes: 1
       with:
         token: ${{ secrets.GH_TOKEN }}
 
     - name: Get Deployment URL
-      id: deployment
+      id: deployment1
       uses: dorshinar/get-deployment-url@master
       timeout-minutes: 1
       with:
