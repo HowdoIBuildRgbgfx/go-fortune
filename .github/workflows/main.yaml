@@ -32,7 +32,7 @@ jobs:
       uses: actions/checkout@v3
       with:
         ref: ${{ github.ref_name }}
-    #Step-3: Create Release using Branch Name
+    #Step-3: Create Release Using Branch Name
     - name: Create Release
       id: create_release
       uses: actions/create-release@v1
