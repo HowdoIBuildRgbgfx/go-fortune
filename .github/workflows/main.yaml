@@ -16,7 +16,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    #Install prerequisites
+    #Install Prerequisites
     - name: Install Node and NPM
       run: sudo apt install nodejs
 
