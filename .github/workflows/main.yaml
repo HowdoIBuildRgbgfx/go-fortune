@@ -55,7 +55,7 @@ jobs:
       id: slack
       uses: slackapi/slack-github-action@v1.23.0
       with:
-      #Step-4: Posting a rich message to Slack using Block Kit
+      #Step-4: Posting a rich message to Slack using the Block Kit
         payload: |
           {
             "blocks": [
