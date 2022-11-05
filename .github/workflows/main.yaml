@@ -12,7 +12,7 @@ on:
 jobs:
   begin-workflow:
     if: ${{ !startsWith( 'github.event.head_commit.message', 'NORUN' ) }}
-    #doesn't work- sends it anyway
+    #doesn't work- sends it anyway?
     runs-on: ubuntu-latest
     steps:
 
