@@ -25,8 +25,6 @@ jobs:
 
     - name: echo the branch name
       run: echo "current branch - ${{ github.ref_name }}"
-      with:
-        ref: ${{ github.ref_name }}
 
     - name: checkout the current repo
       uses: actions/checkout@v3
