@@ -3,27 +3,41 @@ name: DipSA CICD Workshop
 #trigger
 on:
  push:
-  #if:
-
   branches:
   - 'v[0-9]+.[0-9]+'
-  #Step-1
+  #Step-1: Pipeline trigger
 
 jobs:
   begin-workflow:
     if: ${{ !startsWith( format('{0}', github.event.head_commit.message), '#NORUN' ) }}
-    #Step- 5
+    #Step-5: Conditional for #RUN
     runs-on: ubuntu-latest
+
     steps:
+    - name: Install Railway
+      run: npm i -g @railway/cli
 
     - name: echo the branch name
       run: echo "current branch - ${{ github.ref_name }}"
+      with:
+        ref: ${{ github.ref_name }}
 
+    - name: checkout the current repo
+      uses: actions/checkout@v3
+      with:
+        ref: ${{ github.ref_name }}
+
+    - name: Deploy
+        run: railway up
+        env:
+          RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
+
+    #test dorshinar after deploying
     - name: Send custom JSON data to Slack workflow
       id: slack
       uses: slackapi/slack-github-action@v1.23.0
       with:
-        # For posting a rich message using Block Kit
+        #Step-4: Posting a rich message using Block Kit
         payload: |
           {
             "blocks": [
