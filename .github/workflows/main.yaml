@@ -51,7 +51,7 @@ jobs:
         RAILWAY_TOKEN: ${{ secrets.RAILWAY_TOKEN }}
 
 
-    - name: Send custom JSON data to Slack workflow
+    - name: Send Custom JSON Data to Slack Workflow
       id: slack
       uses: slackapi/slack-github-action@v1.23.0
       with:
