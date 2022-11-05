@@ -16,6 +16,13 @@ jobs:
     - name: echo the branch name
       run: echo "current branch - ${{ github.ref_name }}"
 
+    - name: Get deployment URL
+      id: deployment
+      uses: dorshinar/get-deployment-url@master
+      timeout-minutes: 5
+      with:
+        token: ${{ secrets.GH_TOKEN }}
+
     - name: Send custom JSON data to Slack workflow
       id: slack
       uses: slackapi/slack-github-action@v1.23.0
